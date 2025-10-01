@@ -166,7 +166,7 @@ struct LibraryHeader: View {
                     
                     ForEach(ItemType.allCases) { type in
                         FilterChip(
-                            title: type.displayName,
+                            title: LocalizedStringKey(type.displayString),
                             icon: type.icon,
                             color: type.color,
                             isSelected: appState.selectedFilter == type

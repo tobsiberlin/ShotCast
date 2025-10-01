@@ -358,7 +358,7 @@ struct ModernFilterGrid: View {
             ], spacing: GlassTheme.tinySpacing) {
                 ForEach(ItemType.allCases) { type in
                     ModernFilterButton(
-                        title: "\(type.displayName)",
+                        title: type.displayString,
                         icon: type.icon,
                         color: type.color,
                         isSelected: appState.selectedFilter == type

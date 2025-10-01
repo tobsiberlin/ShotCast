@@ -100,9 +100,36 @@ enum ItemType: String, Codable, CaseIterable, Identifiable {
         }
     }
     
-    // EN: Localized display name
-    // DE: Lokalisierter Anzeigename
+    // EN: Localized display name for SwiftUI
+    // DE: Lokalisierter Anzeigename für SwiftUI
     var displayName: LocalizedStringKey {
+        switch self {
+        case .image: return "Bild"
+        case .text: return "Text"
+        case .pdf: return "PDF"
+        case .word: return "Word"
+        case .excel: return "Excel"
+        case .powerpoint: return "PowerPoint"
+        case .pages: return "Pages"
+        case .numbers: return "Numbers"
+        case .keynote: return "Keynote"
+        case .code: return "Code"
+        case .audio: return "Audio"
+        case .video: return "Video"
+        case .design: return "Design"
+        case .font: return "Schrift"
+        case .archive: return "Archiv"
+        case .installer: return "Installer"
+        case .threeDModel: return "3D Modell"
+        case .data: return "Daten"
+        case .link: return "Link"
+        case .file: return "Datei"
+        }
+    }
+    
+    // EN: String display name for filter buttons
+    // DE: String-Anzeigename für Filter-Buttons
+    var displayString: String {
         switch self {
         case .image: return "Bild"
         case .text: return "Text"

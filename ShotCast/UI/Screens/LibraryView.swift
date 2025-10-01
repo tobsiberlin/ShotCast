@@ -153,30 +153,30 @@ struct LibraryHeader: View {
                     .fill(GlassTheme.glassBackground)
             )
             
-            // EN: Type filters
-            // DE: Typ-Filter
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: GlassTheme.smallSpacing) {
+            // EN: Type filters - Grid layout for better accessibility
+            // DE: Typ-Filter - Grid-Layout für bessere Zugänglichkeit
+            LazyVGrid(columns: [
+                GridItem(.adaptive(minimum: 100, maximum: 120), spacing: 6)
+            ], spacing: 6) {
+                FilterChip(
+                    title: "Alle",
+                    isSelected: appState.selectedFilter == nil
+                ) {
+                    appState.selectedFilter = nil
+                }
+                
+                ForEach(ItemType.allCases) { type in
                     FilterChip(
-                        title: "Alle",
-                        isSelected: appState.selectedFilter == nil
+                        title: LocalizedStringKey(type.displayString),
+                        icon: type.icon,
+                        color: type.color,
+                        isSelected: appState.selectedFilter == type
                     ) {
-                        appState.selectedFilter = nil
-                    }
-                    
-                    ForEach(ItemType.allCases) { type in
-                        FilterChip(
-                            title: LocalizedStringKey(type.displayString),
-                            icon: type.icon,
-                            color: type.color,
-                            isSelected: appState.selectedFilter == type
-                        ) {
-                            appState.selectedFilter = appState.selectedFilter == type ? nil : type
-                        }
+                        appState.selectedFilter = appState.selectedFilter == type ? nil : type
                     }
                 }
-                .padding(.horizontal, GlassTheme.tinySpacing)
             }
+            .padding(.horizontal, GlassTheme.tinySpacing)
         }
     }
 }
@@ -195,11 +195,16 @@ struct FilterChip: View {
             HStack(spacing: 4) {
                 if let icon = icon {
                     Image(systemName: icon)
-                        .font(.system(size: 12))
+                        .font(.system(size: 11))
                 }
                 Text(title)
-                    .font(.system(size: 13))
+                    .font(.system(size: 11))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
             }
+            .padding(.horizontal, 8)
+            .padding(.vertical, 6)
+            .frame(maxWidth: .infinity)
         }
         .buttonStyle(GlassButtonStyle(color: isSelected ? color : .secondary))
     }

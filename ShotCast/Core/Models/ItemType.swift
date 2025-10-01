@@ -132,7 +132,7 @@ enum ItemType: String, Codable, CaseIterable, Identifiable {
     var displayString: String {
         switch self {
         case .image: return "Bild"
-        case .text: return "Text"
+        case .text: return "Text-Snippets"
         case .pdf: return "PDF"
         case .word: return "Word"
         case .excel: return "Excel"
@@ -150,7 +150,7 @@ enum ItemType: String, Codable, CaseIterable, Identifiable {
         case .threeDModel: return "3D Modell"
         case .data: return "Daten"
         case .link: return "Link"
-        case .file: return "Datei"
+        case .file: return "Textdatei"
         }
     }
     

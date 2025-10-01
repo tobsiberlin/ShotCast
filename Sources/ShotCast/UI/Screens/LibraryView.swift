@@ -152,7 +152,7 @@ struct EmptyLibraryView: View {
             
             Text("Copy something to your clipboard to get started")
                 .font(.caption)
-                .foregroundColor(.tertiary)
+                .foregroundStyle(.tertiary)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

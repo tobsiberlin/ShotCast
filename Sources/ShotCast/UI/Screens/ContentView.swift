@@ -69,7 +69,7 @@ struct EmptyStateView: View {
             
             Text("Choose an item from the sidebar to view details")
                 .font(.caption)
-                .foregroundColor(.tertiary)
+                .foregroundStyle(.tertiary)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

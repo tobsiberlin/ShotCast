@@ -38,7 +38,7 @@ struct ShotCastApp: App {
                 .modelContainer(modelContainer)
                 .preferredColorScheme(.dark) // EN: Better for glass effects / DE: Besser für Glaseffekte
         }
-        .windowStyle(.hiddenTitleBar)
+        .windowStyle(.titleBar)
         .windowResizability(.contentSize)
         .defaultSize(width: 900, height: 600)
         

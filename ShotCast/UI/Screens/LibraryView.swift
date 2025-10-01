@@ -153,30 +153,101 @@ struct LibraryHeader: View {
                     .fill(GlassTheme.glassBackground)
             )
             
-            // EN: Type filters - Grid layout for better accessibility
-            // DE: Typ-Filter - Grid-Layout für bessere Zugänglichkeit
-            LazyVGrid(columns: [
-                GridItem(.adaptive(minimum: 100, maximum: 120), spacing: 6)
-            ], spacing: 6) {
-                FilterChip(
-                    title: "Alle",
-                    isSelected: appState.selectedFilter == nil
-                ) {
-                    appState.selectedFilter = nil
+            // EN: Type filter dropdown
+            // DE: Typ-Filter Dropdown
+            FilterDropdown(selectedFilter: $appState.selectedFilter)
+        }
+    }
+}
+
+// EN: Filter dropdown component for better space efficiency
+// DE: Filter-Dropdown-Komponente für bessere Platzeffizienz  
+struct FilterDropdown: View {
+    @Binding var selectedFilter: ItemType?
+    @State private var isExpanded = false
+    
+    private var selectedDisplayText: String {
+        if let selectedFilter = selectedFilter {
+            return selectedFilter.displayString
+        } else {
+            return "Alle"
+        }
+    }
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            // EN: Dropdown toggle button
+            // DE: Dropdown-Umschaltknopf
+            Button(action: {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    isExpanded.toggle()
                 }
-                
-                ForEach(ItemType.allCases) { type in
+            }) {
+                HStack {
+                    if let selectedFilter = selectedFilter {
+                        Image(systemName: selectedFilter.icon)
+                            .font(.system(size: 13))
+                            .foregroundColor(selectedFilter.color)
+                    } else {
+                        Image(systemName: "line.3.horizontal.decrease.circle")
+                            .font(.system(size: 13))
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    Text(selectedDisplayText)
+                        .font(.system(size: 14))
+                        .fontWeight(.medium)
+                    
+                    Spacer()
+                    
+                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                        .font(.system(size: 12))
+                        .foregroundColor(.secondary)
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(
+                    RoundedRectangle(cornerRadius: GlassTheme.smallRadius)
+                        .fill(GlassTheme.glassBackground)
+                        .stroke(isExpanded ? GlassTheme.accentBlue : Color.clear, lineWidth: 1)
+                )
+            }
+            .buttonStyle(.plain)
+            
+            // EN: Expandable filter grid
+            // DE: Ausklappbares Filter-Grid
+            if isExpanded {
+                LazyVGrid(columns: [
+                    GridItem(.adaptive(minimum: 90, maximum: 110), spacing: 6)
+                ], spacing: 6) {
                     FilterChip(
-                        title: LocalizedStringKey(type.displayString),
-                        icon: type.icon,
-                        color: type.color,
-                        isSelected: appState.selectedFilter == type
+                        title: "Alle",
+                        isSelected: selectedFilter == nil
                     ) {
-                        appState.selectedFilter = appState.selectedFilter == type ? nil : type
+                        selectedFilter = nil
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            isExpanded = false
+                        }
+                    }
+                    
+                    ForEach(ItemType.allCases) { type in
+                        FilterChip(
+                            title: LocalizedStringKey(type.displayString),
+                            icon: type.icon,
+                            color: type.color,
+                            isSelected: selectedFilter == type
+                        ) {
+                            selectedFilter = selectedFilter == type ? nil : type
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                isExpanded = false
+                            }
+                        }
                     }
                 }
+                .padding(.top, 8)
+                .padding(.horizontal, 4)
+                .transition(.move(edge: .top).combined(with: .opacity))
             }
-            .padding(.horizontal, GlassTheme.tinySpacing)
         }
     }
 }
@@ -192,21 +263,28 @@ struct FilterChip: View {
     
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 4) {
+            VStack(spacing: 2) {
                 if let icon = icon {
                     Image(systemName: icon)
-                        .font(.system(size: 11))
+                        .font(.system(size: 14))
+                        .foregroundColor(isSelected ? color : .secondary)
                 }
                 Text(title)
-                    .font(.system(size: 11))
+                    .font(.system(size: 10))
                     .lineLimit(1)
-                    .minimumScaleFactor(0.8)
+                    .minimumScaleFactor(0.7)
+                    .foregroundColor(isSelected ? color : .primary)
             }
-            .padding(.horizontal, 8)
-            .padding(.vertical, 6)
+            .padding(.horizontal, 6)
+            .padding(.vertical, 8)
             .frame(maxWidth: .infinity)
+            .background(
+                RoundedRectangle(cornerRadius: 6)
+                    .fill(isSelected ? color.opacity(0.1) : Color.clear)
+                    .stroke(isSelected ? color : Color.clear, lineWidth: 1)
+            )
         }
-        .buttonStyle(GlassButtonStyle(color: isSelected ? color : .secondary))
+        .buttonStyle(.plain)
     }
 }
 

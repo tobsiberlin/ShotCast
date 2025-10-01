@@ -101,7 +101,12 @@ struct DetailHeader: View {
                 Label(item.displayDate, systemImage: "calendar")
                 Label(item.displayFileSize, systemImage: "doc")
                 if !item.sourceApp.isEmpty {
-                    Label(item.sourceApp, systemImage: "app")
+                    HStack(spacing: 4) {
+                        Image(systemName: getAppIcon(for: item.sourceApp))
+                            .font(.caption)
+                            .foregroundColor(getAppColor(for: item.sourceApp))
+                        Text(item.sourceApp)
+                    }
                 }
             }
             .font(.caption)
@@ -121,6 +126,158 @@ struct DetailHeader: View {
         item.title = tempTitle
         editingTitle = false
         try? modelContext.save()
+    }
+    
+    // EN: Get app-specific icon for source app
+    // DE: App-spezifisches Icon für Quell-App ermitteln
+    private func getAppIcon(for appName: String) -> String {
+        let lowercased = appName.lowercased()
+        switch lowercased {
+        // Screenshots
+        case "shottr", "screenshot", "bildschirmfoto":
+            return "camera.viewfinder"
+        
+        // Browsers
+        case "safari":
+            return "safari"
+        case "chrome", "google chrome":
+            return "globe"
+        case "firefox":
+            return "flame"
+        case "edge", "microsoft edge":
+            return "globe.europe.africa"
+            
+        // Creative Apps
+        case "photoshop", "adobe photoshop":
+            return "paintbrush.pointed.fill"
+        case "illustrator", "adobe illustrator":
+            return "pencil.and.outline"
+        case "figma":
+            return "rectangle.on.rectangle"
+        case "sketch":
+            return "diamond"
+            
+        // Office Apps
+        case "word", "microsoft word":
+            return "w.square.fill"
+        case "excel", "microsoft excel":
+            return "x.square.fill"
+        case "powerpoint", "microsoft powerpoint":
+            return "p.square.fill"
+        case "pages":
+            return "doc.richtext"
+        case "numbers":
+            return "tablecells.fill"
+        case "keynote":
+            return "k.square.fill"
+            
+        // Development
+        case "xcode":
+            return "hammer.fill"
+        case "vs code", "visual studio code", "code":
+            return "curlybraces.square"
+        case "terminal":
+            return "terminal"
+        case "git", "github":
+            return "arrow.triangle.branch"
+            
+        // Communication
+        case "slack":
+            return "message.fill"
+        case "teams", "microsoft teams":
+            return "person.2.fill"
+        case "zoom":
+            return "video.fill"
+        case "mail", "apple mail":
+            return "envelope.fill"
+            
+        // Media
+        case "spotify":
+            return "music.note.list"
+        case "vlc":
+            return "play.circle.fill"
+        case "quicktime", "quicktime player":
+            return "play.rectangle.fill"
+            
+        default:
+            return "app.fill"
+        }
+    }
+    
+    // EN: Get app-specific color for source app
+    // DE: App-spezifische Farbe für Quell-App ermitteln
+    private func getAppColor(for appName: String) -> Color {
+        let lowercased = appName.lowercased()
+        switch lowercased {
+        // Screenshots
+        case "shottr", "screenshot", "bildschirmfoto":
+            return .orange
+            
+        // Browsers
+        case "safari":
+            return .blue
+        case "chrome", "google chrome":
+            return .red
+        case "firefox":
+            return .orange
+        case "edge", "microsoft edge":
+            return .blue
+            
+        // Creative Apps
+        case "photoshop", "adobe photoshop":
+            return .blue
+        case "illustrator", "adobe illustrator":
+            return .orange
+        case "figma":
+            return .purple
+        case "sketch":
+            return .yellow
+            
+        // Office Apps
+        case "word", "microsoft word":
+            return .blue
+        case "excel", "microsoft excel":
+            return .green
+        case "powerpoint", "microsoft powerpoint":
+            return .red
+        case "pages":
+            return .orange
+        case "numbers":
+            return .green
+        case "keynote":
+            return .blue
+            
+        // Development
+        case "xcode":
+            return .blue
+        case "vs code", "visual studio code", "code":
+            return .blue
+        case "terminal":
+            return .green
+        case "git", "github":
+            return .gray
+            
+        // Communication
+        case "slack":
+            return .purple
+        case "teams", "microsoft teams":
+            return .blue
+        case "zoom":
+            return .blue
+        case "mail", "apple mail":
+            return .blue
+            
+        // Media
+        case "spotify":
+            return .green
+        case "vlc":
+            return .orange
+        case "quicktime", "quicktime player":
+            return .gray
+            
+        default:
+            return .secondary
+        }
     }
 }
 

@@ -50,30 +50,30 @@ enum ItemType: String, Codable, CaseIterable, Identifiable {
     
     var id: String { self.rawValue }
     
-    // EN: Returns appropriate SF Symbol for each type
-    // DE: Gibt passendes SF Symbol für jeden Typ zurück
+    // EN: Returns brand-appropriate SF Symbol for each type
+    // DE: Gibt markenkonformes SF Symbol für jeden Typ zurück
     var icon: String {
         switch self {
-        case .image: return "photo"
-        case .text: return "doc.text"
-        case .pdf: return "doc.fill"
-        case .word: return "doc.richtext"
-        case .excel: return "tablecells"
-        case .powerpoint: return "doc.text.image"
-        case .pages: return "doc.richtext.fill"
+        case .image: return "photo.fill"
+        case .text: return "doc.plaintext"
+        case .pdf: return "doc.richtext.fill"
+        case .word: return "w.square.fill"
+        case .excel: return "x.square.fill"
+        case .powerpoint: return "p.square.fill"
+        case .pages: return "doc.richtext"
         case .numbers: return "tablecells.fill"
-        case .keynote: return "play.rectangle"
-        case .code: return "chevron.left.forwardslash.chevron.right"
-        case .audio: return "waveform"
-        case .video: return "play.rectangle.fill"
-        case .design: return "paintbrush.pointed.fill"
-        case .font: return "textformat"
-        case .archive: return "doc.zipper"
-        case .installer: return "shippingbox.fill"
-        case .threeDModel: return "cube.fill"
-        case .data: return "chart.bar.fill"
-        case .link: return "link"
-        case .file: return "doc"
+        case .keynote: return "k.square.fill"
+        case .code: return "curlybraces"
+        case .audio: return "music.note"
+        case .video: return "video.fill"
+        case .design: return "paintpalette.fill"
+        case .font: return "textformat.abc"
+        case .archive: return "archivebox.fill"
+        case .installer: return "arrow.down.app.fill"
+        case .threeDModel: return "view.3d"
+        case .data: return "chart.bar.doc.horizontal.fill"
+        case .link: return "link.circle.fill"
+        case .file: return "doc.text.fill"
         }
     }
     

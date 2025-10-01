@@ -153,9 +153,30 @@ struct LibraryHeader: View {
                     .fill(GlassTheme.glassBackground)
             )
             
-            // EN: Modern filter grid
-            // DE: Moderne Filter-Raster
-            ModernFilterGrid()
+            // EN: Type filters
+            // DE: Typ-Filter
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: GlassTheme.smallSpacing) {
+                    FilterChip(
+                        title: "Alle",
+                        isSelected: appState.selectedFilter == nil
+                    ) {
+                        appState.selectedFilter = nil
+                    }
+                    
+                    ForEach(ItemType.allCases) { type in
+                        FilterChip(
+                            title: type.displayName,
+                            icon: type.icon,
+                            color: type.color,
+                            isSelected: appState.selectedFilter == type
+                        ) {
+                            appState.selectedFilter = appState.selectedFilter == type ? nil : type
+                        }
+                    }
+                }
+                .padding(.horizontal, GlassTheme.tinySpacing)
+            }
         }
     }
 }
@@ -333,89 +354,3 @@ struct LibraryItemCard: View {
     }
 }
 
-// EN: Modern filter grid with categories
-// DE: Moderne Filter-Raster mit Kategorien
-struct ModernFilterGrid: View {
-    @EnvironmentObject var appState: AppState
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: GlassTheme.smallSpacing) {
-            // EN: "All" filter button
-            // DE: "Alle" Filter-Button
-            ModernFilterButton(
-                title: "Alle",
-                icon: "square.grid.2x2",
-                color: .primary,
-                isSelected: appState.selectedFilter == nil
-            ) {
-                appState.selectedFilter = nil
-            }
-            
-            // EN: Category-organized filters
-            // DE: Nach Kategorien organisierte Filter
-            LazyVGrid(columns: [
-                GridItem(.adaptive(minimum: 100), spacing: GlassTheme.tinySpacing)
-            ], spacing: GlassTheme.tinySpacing) {
-                ForEach(ItemType.allCases) { type in
-                    ModernFilterButton(
-                        title: type.displayString,
-                        icon: type.icon,
-                        color: type.color,
-                        isSelected: appState.selectedFilter == type
-                    ) {
-                        appState.selectedFilter = appState.selectedFilter == type ? nil : type
-                    }
-                }
-            }
-        }
-    }
-}
-
-// EN: Modern filter button with hover effects
-// DE: Moderne Filter-Schaltfläche mit Hover-Effekten
-struct ModernFilterButton: View {
-    let title: String
-    let icon: String
-    let color: Color
-    let isSelected: Bool
-    let action: () -> Void
-    
-    @State private var isHovered = false
-    
-    var body: some View {
-        Button(action: action) {
-            VStack(spacing: 4) {
-                Image(systemName: icon)
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(isSelected ? .white : color)
-                
-                Text(title)
-                    .font(.system(size: 11, weight: .medium))
-                    .foregroundColor(isSelected ? .white : .primary)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 8)
-            .padding(.horizontal, 6)
-            .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(isSelected ? color : (isHovered ? color.opacity(0.1) : Color.clear))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(
-                                isSelected ? color : (isHovered ? color.opacity(0.3) : Color.clear), 
-                                lineWidth: isSelected ? 2 : 1
-                            )
-                    )
-            )
-        }
-        .buttonStyle(.plain)
-        .scaleEffect(isHovered && !isSelected ? 1.05 : 1.0)
-        .animation(GlassTheme.quickAnimation, value: isHovered)
-        .animation(GlassTheme.quickAnimation, value: isSelected)
-        .onHover { hovering in
-            isHovered = hovering
-        }
-    }
-}

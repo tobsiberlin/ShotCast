@@ -39,7 +39,7 @@ struct MenuBarView: View {
             ScrollView {
                 VStack(spacing: 2) {
                     if displayItems.isEmpty {
-                        Text("No items yet")
+                        Text("No items yet", comment: "Message shown when clipboard is empty")
                             .foregroundColor(.secondary)
                             .padding()
                     } else {
@@ -66,6 +66,7 @@ struct MenuBarView: View {
                 
                 Button(action: openSettings) {
                     Image(systemName: "gear")
+                        .help("Settings")
                 }
                 .buttonStyle(.plain)
             }

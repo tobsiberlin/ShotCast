@@ -27,6 +27,10 @@ struct ShotCastApp: App {
             // DE: Fataler Fehler wenn wir den Model-Container nicht erstellen können
             fatalError("Failed to create ModelContainer: \(error)")
         }
+        
+        // EN: Ensure app appears in dock and is visible
+        // DE: Sicherstellen dass App im Dock erscheint und sichtbar ist
+        NSApp.setActivationPolicy(.regular)
     }
     
     var body: some Scene {
@@ -37,10 +41,16 @@ struct ShotCastApp: App {
                 .environmentObject(appState)
                 .modelContainer(modelContainer)
                 .preferredColorScheme(.dark) // EN: Better for glass effects / DE: Besser für Glaseffekte
+                .onAppear {
+                    // EN: Bring app to front when window appears
+                    // DE: App in Vordergrund bringen wenn Fenster erscheint
+                    NSApp.activate(ignoringOtherApps: true)
+                }
         }
         .windowStyle(.titleBar)
         .windowResizability(.contentSize)
         .defaultSize(width: 900, height: 600)
+        .defaultPosition(.center)
         
         // EN: Menu bar extra for quick access
         // DE: Menüleisten-Extra für schnellen Zugriff

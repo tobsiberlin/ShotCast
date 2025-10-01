@@ -6,7 +6,6 @@ import SwiftUI
 enum ItemType: String, Codable, CaseIterable, Identifiable {
     // EN: Images
     // DE: Bilder
-    case screenshot = "screenshot"
     case image = "image"           // jpg, jpeg, png, heic, gif, bmp, tiff, webp
     
     // EN: Documents
@@ -29,9 +28,20 @@ enum ItemType: String, Codable, CaseIterable, Identifiable {
     case audio = "audio"            // mp3, wav, aac, flac, m4a, ogg
     case video = "video"            // mp4, mov, avi, mkv, webm
     
-    // EN: Archives
-    // DE: Archive
+    // EN: Creative & Design
+    // DE: Kreativ & Design
+    case design = "design"          // psd, ai, sketch, fig, xd
+    case font = "font"              // ttf, otf, woff, woff2
+    
+    // EN: Archives & Installation
+    // DE: Archive & Installation
     case archive = "archive"        // zip, rar, 7z, tar, gz
+    case installer = "installer"    // dmg, pkg, msi, exe, app
+    
+    // EN: 3D & Data
+    // DE: 3D & Daten
+    case threeDModel = "threedmodel" // obj, fbx, blend, dae
+    case data = "data"              // csv, json, xml, db
     
     // EN: Other
     // DE: Andere
@@ -44,7 +54,6 @@ enum ItemType: String, Codable, CaseIterable, Identifiable {
     // DE: Gibt passendes SF Symbol für jeden Typ zurück
     var icon: String {
         switch self {
-        case .screenshot: return "camera.viewfinder"
         case .image: return "photo"
         case .text: return "doc.text"
         case .pdf: return "doc.fill"
@@ -57,7 +66,12 @@ enum ItemType: String, Codable, CaseIterable, Identifiable {
         case .code: return "chevron.left.forwardslash.chevron.right"
         case .audio: return "waveform"
         case .video: return "play.rectangle.fill"
+        case .design: return "paintbrush.pointed.fill"
+        case .font: return "textformat"
         case .archive: return "doc.zipper"
+        case .installer: return "shippingbox.fill"
+        case .threeDModel: return "cube.fill"
+        case .data: return "chart.bar.fill"
         case .link: return "link"
         case .file: return "doc"
         }
@@ -67,7 +81,7 @@ enum ItemType: String, Codable, CaseIterable, Identifiable {
     // DE: Gibt Farbe für jeden Typ zurück
     var color: Color {
         switch self {
-        case .screenshot, .image: return .blue
+        case .image: return .blue
         case .text, .word, .pages: return .purple
         case .pdf: return .red
         case .excel, .numbers: return .green
@@ -75,7 +89,12 @@ enum ItemType: String, Codable, CaseIterable, Identifiable {
         case .code: return .indigo
         case .audio: return .pink
         case .video: return .cyan
+        case .design: return .purple
+        case .font: return .indigo
         case .archive: return .brown
+        case .installer: return .blue
+        case .threeDModel: return .orange
+        case .data: return .green
         case .link: return .teal
         case .file: return .gray
         }
@@ -85,8 +104,7 @@ enum ItemType: String, Codable, CaseIterable, Identifiable {
     // DE: Lokalisierter Anzeigename
     var displayName: LocalizedStringKey {
         switch self {
-        case .screenshot: return "Screenshot"
-        case .image: return "Image"
+        case .image: return "Bild"
         case .text: return "Text"
         case .pdf: return "PDF"
         case .word: return "Word"
@@ -98,9 +116,14 @@ enum ItemType: String, Codable, CaseIterable, Identifiable {
         case .code: return "Code"
         case .audio: return "Audio"
         case .video: return "Video"
-        case .archive: return "Archive"
+        case .design: return "Design"
+        case .font: return "Schrift"
+        case .archive: return "Archiv"
+        case .installer: return "Installer"
+        case .threeDModel: return "3D Modell"
+        case .data: return "Daten"
         case .link: return "Link"
-        case .file: return "File"
+        case .file: return "Datei"
         }
     }
     
@@ -144,9 +167,29 @@ enum ItemType: String, Codable, CaseIterable, Identifiable {
         case "mp4", "mov", "avi", "mkv", "webm", "flv", "wmv", "m4v":
             return .video
             
+        // Design files
+        case "psd", "ai", "sketch", "fig", "xd", "indd", "eps", "affinity":
+            return .design
+            
+        // Font files
+        case "ttf", "otf", "woff", "woff2", "eot", "fon":
+            return .font
+            
         // Archives
-        case "zip", "rar", "7z", "tar", "gz", "bz2", "xz":
+        case "zip", "rar", "7z", "tar", "gz", "bz2", "xz", "dmg", "pkg":
             return .archive
+            
+        // Installer files
+        case "app", "msi", "exe", "deb", "rpm", "appx":
+            return .installer
+            
+        // 3D Model files
+        case "obj", "fbx", "dae", "3ds", "blend", "max", "maya", "c4d":
+            return .threeDModel
+            
+        // Data files  
+        case "tsv", "db", "sqlite", "plist":
+            return .data
             
         default:
             return .file

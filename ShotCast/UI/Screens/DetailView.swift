@@ -132,7 +132,7 @@ struct ContentPreview: View {
     var body: some View {
         GlassCard {
             switch item.itemType {
-            case .image, .screenshot:
+            case .image:
                 if let data = item.thumbnailData,
                    let nsImage = NSImage(data: data) {
                     Image(nsImage: nsImage)

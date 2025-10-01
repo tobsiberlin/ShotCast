@@ -15,52 +15,119 @@ struct LibraryView: View {
     
     @Binding var selectedItem: ClipboardItem?
     
+    // EN: Track latest item for notifications
+    // DE: Verfolge neuestes Element für Benachrichtigungen
+    @State private var latestItemId: UUID?
+    @State private var showNewItemBadge = false
+    
     // EN: Filter items based on search and type
     // DE: Elemente basierend auf Suche und Typ filtern
     private var filteredItems: [ClipboardItem] {
-        items.filter { item in
-            let matchesSearch = appState.searchQuery.isEmpty || 
-                item.title.localizedCaseInsensitiveContains(appState.searchQuery) ||
-                (item.ocrText ?? "").localizedCaseInsensitiveContains(appState.searchQuery)
+        let searchQuery = appState.searchQuery
+        let selectedFilter = appState.selectedFilter
+        
+        return items.filter { item in
+            // Search filter
+            let matchesSearch = searchQuery.isEmpty || 
+                item.title.localizedCaseInsensitiveContains(searchQuery) ||
+                (item.ocrText ?? "").localizedCaseInsensitiveContains(searchQuery)
             
-            let matchesType = appState.selectedFilter == nil || 
-                item.itemType == appState.selectedFilter
+            // Type filter
+            let matchesType = selectedFilter == nil || item.itemType == selectedFilter
             
             return matchesSearch && matchesType
         }
     }
     
-    var body: some View {
+    // EN: Main content area
+    // DE: Haupt-Inhaltsbereich
+    private var contentArea: some View {
         VStack(spacing: 0) {
-            // EN: Search and filter header
-            // DE: Such- und Filter-Kopfzeile
             LibraryHeader()
                 .padding(GlassTheme.mediumSpacing)
             
             Divider()
             
-            // EN: Items grid
-            // DE: Elemente-Raster
+            itemsGridView
+        }
+        .background(.ultraThinMaterial)
+    }
+    
+    // EN: Items grid view
+    // DE: Elemente-Raster-Ansicht
+    private var itemsGridView: some View {
+        Group {
             if filteredItems.isEmpty {
                 EmptyLibraryView()
             } else {
-                ScrollView {
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 150))], 
-                             spacing: GlassTheme.mediumSpacing) {
-                        ForEach(filteredItems) { item in
-                            LibraryItemCard(
-                                item: item,
-                                isSelected: selectedItem?.id == item.id
-                            ) {
-                                selectedItem = item
-                            }
-                        }
-                    }
-                    .padding(GlassTheme.mediumSpacing)
-                }
+                itemsScrollView
             }
         }
-        .background(.ultraThinMaterial)
+    }
+    
+    // EN: Scrollable items view
+    // DE: Scrollbare Elemente-Ansicht
+    private var itemsScrollView: some View {
+        ScrollView {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 150))], 
+                     spacing: GlassTheme.mediumSpacing) {
+                ForEach(filteredItems) { item in
+                    LibraryItemCard(
+                        item: item,
+                        isSelected: selectedItem?.id == item.id
+                    ) {
+                        selectedItem = item
+                    }
+                }
+            }
+            .padding(GlassTheme.mediumSpacing)
+        }
+    }
+    
+    // EN: Notification badge
+    // DE: Benachrichtigungs-Badge
+    private var notificationBadge: some View {
+        Group {
+            if showNewItemBadge {
+                HStack(spacing: 8) {
+                    Image(systemName: "plus.circle.fill")
+                        .foregroundColor(.green)
+                    Text("Neues Element hinzugefügt")
+                        .font(.caption)
+                        .fontWeight(.medium)
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(.ultraThinMaterial, in: Capsule())
+                .padding()
+                .transition(.move(edge: .top).combined(with: .opacity))
+                .animation(GlassTheme.standardAnimation, value: showNewItemBadge)
+            }
+        }
+    }
+    
+    var body: some View {
+        contentArea
+            .onChange(of: items.count) { _, newCount in
+                handleNewItems()
+            }
+            .overlay(alignment: .topTrailing) {
+                notificationBadge
+            }
+    }
+    
+    // EN: Handle new items notification
+    // DE: Behandle neue Elemente Benachrichtigung
+    private func handleNewItems() {
+        if let firstItem = items.first, 
+           firstItem.id != latestItemId {
+            latestItemId = firstItem.id
+            showNewItemBadge = true
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                showNewItemBadge = false
+            }
+        }
     }
 }
 
@@ -86,29 +153,9 @@ struct LibraryHeader: View {
                     .fill(GlassTheme.glassBackground)
             )
             
-            // EN: Type filters
-            // DE: Typ-Filter
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: GlassTheme.smallSpacing) {
-                    FilterChip(
-                        title: "All",
-                        isSelected: appState.selectedFilter == nil
-                    ) {
-                        appState.selectedFilter = nil
-                    }
-                    
-                    ForEach(ItemType.allCases) { type in
-                        FilterChip(
-                            title: type.displayName,
-                            icon: type.icon,
-                            color: type.color,
-                            isSelected: appState.selectedFilter == type
-                        ) {
-                            appState.selectedFilter = type
-                        }
-                    }
-                }
-            }
+            // EN: Modern filter grid
+            // DE: Moderne Filter-Raster
+            ModernFilterGrid()
         }
     }
 }
@@ -166,23 +213,59 @@ struct LibraryItemCard: View {
     let onTap: () -> Void
     
     @State private var isHovered = false
+    @State private var thumbnailImage: NSImage?
     
     var body: some View {
         GlassCard {
             VStack(alignment: .leading, spacing: GlassTheme.smallSpacing) {
-                // EN: Item icon and title
-                // DE: Element-Symbol und Titel
-                HStack {
-                    Image(systemName: item.itemType.icon)
-                        .font(.title2)
-                        .foregroundColor(item.itemType.color)
-                    
-                    Spacer()
-                    
-                    if item.isFavorite {
-                        Image(systemName: "star.fill")
-                            .font(.caption)
-                            .foregroundColor(.yellow)
+                // EN: Thumbnail or icon
+                // DE: Vorschaubild oder Symbol
+                if let thumbnailImage = thumbnailImage {
+                    Image(nsImage: thumbnailImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: 80)
+                        .frame(maxWidth: .infinity)
+                        .clipShape(RoundedRectangle(cornerRadius: GlassTheme.smallRadius))
+                        .overlay(
+                            // EN: Item type badge on thumbnail
+                            // DE: Element-Typ-Badge auf Vorschaubild
+                            HStack {
+                                Spacer()
+                                VStack {
+                                    HStack(spacing: 4) {
+                                        Image(systemName: item.itemType.icon)
+                                            .font(.caption)
+                                        if item.isFavorite {
+                                            Image(systemName: "star.fill")
+                                                .font(.caption)
+                                                .foregroundColor(.yellow)
+                                        }
+                                    }
+                                    .padding(.horizontal, 6)
+                                    .padding(.vertical, 3)
+                                    .background(.ultraThinMaterial, in: Capsule())
+                                    .foregroundColor(item.itemType.color)
+                                    Spacer()
+                                }
+                            }
+                            .padding(GlassTheme.tinySpacing)
+                        )
+                } else {
+                    // EN: Fallback icon view
+                    // DE: Fallback-Symbol-Ansicht
+                    HStack {
+                        Image(systemName: item.itemType.icon)
+                            .font(.title2)
+                            .foregroundColor(item.itemType.color)
+                        
+                        Spacer()
+                        
+                        if item.isFavorite {
+                            Image(systemName: "star.fill")
+                                .font(.caption)
+                                .foregroundColor(.yellow)
+                        }
                     }
                 }
                 
@@ -224,5 +307,115 @@ struct LibraryItemCard: View {
             isHovered = hovering
         }
         .onTapGesture(perform: onTap)
+        .onAppear {
+            loadThumbnailIfNeeded()
+        }
+    }
+    
+    // EN: Load thumbnail for images and PDFs
+    // DE: Lade Vorschaubild für Bilder und PDFs
+    private func loadThumbnailIfNeeded() {
+        // EN: Only generate thumbnails for supported types
+        // DE: Nur Vorschaubilder für unterstützte Typen generieren
+        guard item.itemType == .image || item.itemType == .pdf || item.itemType == .video else {
+            return
+        }
+        
+        Task {
+            let generator = ThumbnailGenerator()
+            if let thumbnailData = await generator.generateThumbnail(for: item),
+               let image = NSImage(data: thumbnailData) {
+                await MainActor.run {
+                    self.thumbnailImage = image
+                }
+            }
+        }
+    }
+}
+
+// EN: Modern filter grid with categories
+// DE: Moderne Filter-Raster mit Kategorien
+struct ModernFilterGrid: View {
+    @EnvironmentObject var appState: AppState
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: GlassTheme.smallSpacing) {
+            // EN: "All" filter button
+            // DE: "Alle" Filter-Button
+            ModernFilterButton(
+                title: "Alle",
+                icon: "square.grid.2x2",
+                color: .primary,
+                isSelected: appState.selectedFilter == nil
+            ) {
+                appState.selectedFilter = nil
+            }
+            
+            // EN: Category-organized filters
+            // DE: Nach Kategorien organisierte Filter
+            LazyVGrid(columns: [
+                GridItem(.adaptive(minimum: 100), spacing: GlassTheme.tinySpacing)
+            ], spacing: GlassTheme.tinySpacing) {
+                ForEach(ItemType.allCases) { type in
+                    ModernFilterButton(
+                        title: "\(type.displayName)",
+                        icon: type.icon,
+                        color: type.color,
+                        isSelected: appState.selectedFilter == type
+                    ) {
+                        appState.selectedFilter = appState.selectedFilter == type ? nil : type
+                    }
+                }
+            }
+        }
+    }
+}
+
+// EN: Modern filter button with hover effects
+// DE: Moderne Filter-Schaltfläche mit Hover-Effekten
+struct ModernFilterButton: View {
+    let title: String
+    let icon: String
+    let color: Color
+    let isSelected: Bool
+    let action: () -> Void
+    
+    @State private var isHovered = false
+    
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 4) {
+                Image(systemName: icon)
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundColor(isSelected ? .white : color)
+                
+                Text(title)
+                    .font(.system(size: 11, weight: .medium))
+                    .foregroundColor(isSelected ? .white : .primary)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 8)
+            .padding(.horizontal, 6)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(isSelected ? color : (isHovered ? color.opacity(0.1) : Color.clear))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(
+                                isSelected ? color : (isHovered ? color.opacity(0.3) : Color.clear), 
+                                lineWidth: isSelected ? 2 : 1
+                            )
+                    )
+            )
+        }
+        .buttonStyle(.plain)
+        .scaleEffect(isHovered && !isSelected ? 1.05 : 1.0)
+        .animation(GlassTheme.quickAnimation, value: isHovered)
+        .animation(GlassTheme.quickAnimation, value: isSelected)
+        .onHover { hovering in
+            isHovered = hovering
+        }
     }
 }

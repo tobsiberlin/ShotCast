@@ -4,6 +4,7 @@
 import Foundation
 import SwiftData
 import SwiftUI
+import CryptoKit
 
 @Model
 final class ClipboardItem {
@@ -45,9 +46,29 @@ final class ClipboardItem {
     @Attribute(.externalStorage)
     var originalData: Data?
     
+    // EN: Current working data (for processing)
+    // DE: Aktuelle Arbeitsdaten (für Verarbeitung)
+    @Attribute(.externalStorage)
+    var content: Data?
+    
+    // EN: File URL if applicable
+    // DE: Datei-URL falls zutreffend
+    var fileURL: URL?
+    
+    // EN: Creation timestamp
+    // DE: Erstellungszeitstempel
+    var createdAt: Date = Date()
+    
     // EN: File size in bytes
     // DE: Dateigröße in Bytes
     var fileSize: Int64 = 0
+    
+    // EN: Content hash for duplicate detection
+    // DE: Content-Hash für Duplikatserkennung
+    var contentHash: String {
+        guard let data = content ?? originalData else { return "" }
+        return data.sha256
+    }
     
     // EN: Relationships to tags
     // DE: Beziehungen zu Tags
@@ -83,22 +104,34 @@ final class ClipboardItem {
     // DE: Initialisiert ein neues Zwischenablage-Element mit allen erforderlichen Eigenschaften
     init(
         title: String,
+        content: Data,
         itemType: ItemType,
         sourceApp: String = "",
-        data: Data? = nil,
-        thumbnailData: Data? = nil,
-        ocrText: String? = nil
+        fileURL: URL? = nil,
+        ocrText: String? = nil,
+        fileSize: Int64 = 0
     ) {
         self.id = UUID()
         self.title = title
+        self.content = content
         self.itemTypeRaw = itemType.rawValue
         self.sourceApp = sourceApp
+        self.fileURL = fileURL
         self.timestamp = Date()
-        self.originalData = data
-        self.thumbnailData = thumbnailData
+        self.createdAt = Date()
+        self.originalData = content
         self.ocrText = ocrText
-        self.fileSize = Int64(data?.count ?? 0)
+        self.fileSize = fileSize > 0 ? fileSize : Int64(content.count)
         self.isFavorite = false
         self.tags = []
+    }
+}
+
+// EN: Extension for Data to compute SHA256 hash
+// DE: Erweiterung für Data um SHA256-Hash zu berechnen
+extension Data {
+    var sha256: String {
+        let digest = SHA256.hash(data: self)
+        return digest.compactMap { String(format: "%02x", $0) }.joined()
     }
 }

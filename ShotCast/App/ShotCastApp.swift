@@ -36,7 +36,7 @@ struct ShotCastApp: App {
             ContentView()
                 .environmentObject(appState)
                 .modelContainer(modelContainer)
-                .preferredColorScheme(.dark) // EN: Better for glass effects / DE: Besser für Glaseffekte
+                .preferredColorScheme(.light) // EN: Light theme for better transparency / DE: Helles Theme für bessere Transparenz
                 .onAppear {
                     // EN: Ensure app appears in dock and is visible
                     // DE: Sicherstellen dass App im Dock erscheint und sichtbar ist

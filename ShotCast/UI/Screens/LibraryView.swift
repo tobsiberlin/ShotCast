@@ -425,9 +425,13 @@ struct LibraryItemCard: View {
             return
         }
         
+        // EN: Capture values needed for async task
+        // DE: Erfasse Werte für asynchrone Aufgabe
+        let itemCopy = item
+        
         Task {
             let generator = ThumbnailGenerator()
-            if let thumbnailData = await generator.generateThumbnail(for: item),
+            if let thumbnailData = await generator.generateThumbnail(for: itemCopy),
                let image = NSImage(data: thumbnailData) {
                 await MainActor.run {
                     self.thumbnailImage = image

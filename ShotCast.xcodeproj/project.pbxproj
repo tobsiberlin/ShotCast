@@ -10,6 +10,7 @@
 		5FF1B4E22E8D3D1500D84A65 /* ThumbnailGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF1B4E02E8D3D1500D84A65 /* ThumbnailGenerator.swift */; };
 		5FF1B4E32E8D3D1500D84A65 /* ContentTypeDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF1B4DF2E8D3D1500D84A65 /* ContentTypeDetector.swift */; };
 		5FF1B4E42E8D3D1500D84A65 /* ClipboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF1B4DE2E8D3D1500D84A65 /* ClipboardMonitor.swift */; };
+		5FF1B4E52E8D3D1600D84A65 /* AppIconHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF1B4E62E8D3D1600D84A65 /* AppIconHelper.swift */; };
 		A01234561234567890123456 /* ShotCastApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01234561234567890123455 /* ShotCastApp.swift */; };
 		A01234561234567890123458 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01234561234567890123457 /* ContentView.swift */; };
 		A01234561234567890123460 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A01234561234567890123459 /* Assets.xcassets */; };
@@ -28,6 +29,7 @@
 		5FF1B4DE2E8D3D1500D84A65 /* ClipboardMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardMonitor.swift; sourceTree = "<group>"; };
 		5FF1B4DF2E8D3D1500D84A65 /* ContentTypeDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTypeDetector.swift; sourceTree = "<group>"; };
 		5FF1B4E02E8D3D1500D84A65 /* ThumbnailGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailGenerator.swift; sourceTree = "<group>"; };
+		5FF1B4E62E8D3D1600D84A65 /* AppIconHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconHelper.swift; sourceTree = "<group>"; };
 		A01234561234567890123452 /* ShotCast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShotCast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A01234561234567890123455 /* ShotCastApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShotCastApp.swift; sourceTree = "<group>"; };
 		A01234561234567890123457 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -61,6 +63,7 @@
 				5FF1B4DE2E8D3D1500D84A65 /* ClipboardMonitor.swift */,
 				5FF1B4DF2E8D3D1500D84A65 /* ContentTypeDetector.swift */,
 				5FF1B4E02E8D3D1500D84A65 /* ThumbnailGenerator.swift */,
+				5FF1B4E62E8D3D1600D84A65 /* AppIconHelper.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -249,6 +252,7 @@
 				5FF1B4E22E8D3D1500D84A65 /* ThumbnailGenerator.swift in Sources */,
 				5FF1B4E32E8D3D1500D84A65 /* ContentTypeDetector.swift in Sources */,
 				5FF1B4E42E8D3D1500D84A65 /* ClipboardMonitor.swift in Sources */,
+				5FF1B4E52E8D3D1600D84A65 /* AppIconHelper.swift in Sources */,
 				A01234561234567890123472 /* LibraryView.swift in Sources */,
 				A01234561234567890123474 /* DetailView.swift in Sources */,
 				A01234561234567890123476 /* MenuBarView.swift in Sources */,

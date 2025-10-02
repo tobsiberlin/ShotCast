@@ -58,7 +58,7 @@ enum ItemType: String, Codable, CaseIterable, Identifiable {
         case .text: return "doc.plaintext"
         case .pdf: return "doc.richtext.fill"
         case .word: return "w.square.fill"
-        case .excel: return "x.square.fill"
+        case .excel: return "x.square.fill" 
         case .powerpoint: return "p.square.fill"
         case .pages: return "doc.richtext"
         case .numbers: return "tablecells.fill"
@@ -82,10 +82,14 @@ enum ItemType: String, Codable, CaseIterable, Identifiable {
     var color: Color {
         switch self {
         case .image: return .blue
-        case .text, .word, .pages: return .purple
-        case .pdf: return .red
-        case .excel, .numbers: return .green
-        case .powerpoint, .keynote: return .orange
+        case .text: return .purple
+        case .pdf: return Color.red // Adobe PDF rot
+        case .word: return Color.blue // Microsoft Word blau
+        case .excel: return Color.green // Microsoft Excel grün
+        case .powerpoint: return Color.orange // Microsoft PowerPoint orange
+        case .pages: return .orange // Apple Pages orange
+        case .numbers: return .green // Apple Numbers grün
+        case .keynote: return .blue // Apple Keynote blau
         case .code: return .indigo
         case .audio: return .pink
         case .video: return .cyan

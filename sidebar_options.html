@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShotCast - Sidebar Design Optionen</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f7;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .option {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .option h2 {
+            margin: 0 0 20px 0;
+            color: #1d1d1f;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .sidebar-demo {
+            width: 280px;
+            height: 500px;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .search-bar {
+            background: rgba(0,0,0,0.05);
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            border: none;
+            width: 100%;
+        }
+        .filter-dropdown {
+            background: rgba(0,0,0,0.05);
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            width: 100%;
+            border: none;
+        }
+        
+        /* Option 1: Große Icons links mit Vorschaubildern */
+        .option1 .item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.03);
+        }
+        .option1 .preview-container {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            margin-right: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .option1 .preview-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+        .option1 .preview-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #f0f0f0 25%, transparent 25%), 
+                        linear-gradient(-45deg, #f0f0f0 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, #f0f0f0 75%), 
+                        linear-gradient(-45deg, transparent 75%, #f0f0f0 75%);
+            background-size: 8px 8px;
+            background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 20px;
+        }
+        .option1 .icon-badge {
+            position: absolute;
+            bottom: -4px;
+            right: -4px;
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: white;
+            font-weight: bold;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .option1 .pdf { background: #dc3545; }
+        .option1 .word { background: #0078d4; }
+        .option1 .excel { background: #217346; }
+        .option1 .image { background: #007aff; }
+        
+        .option2 .pdf { background: #dc3545; }
+        .option2 .word { background: #0078d4; }
+        .option2 .excel { background: #217346; }
+        .option2 .image { background: #007aff; }
+        
+        .option3 .pdf { background: #dc3545; }
+        .option3 .word { background: #0078d4; }
+        .option3 .excel { background: #217346; }
+        .option3 .image { background: #007aff; }
+        
+        .option4 .pdf { background: #dc3545; }
+        .option4 .word { background: #0078d4; }
+        .option4 .excel { background: #217346; }
+        .option4 .image { background: #007aff; }
+        .option1 .content {
+            flex: 1;
+        }
+        .option1 .title {
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+        .option1 .date {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* Option 2: Vorschaubild mit schwebenden Badges */
+        .option2 .item {
+            position: relative;
+            background: rgba(0,0,0,0.03);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        .option2 .preview-container {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            margin-right: 12px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .option2 .preview-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .option2 .preview-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #f0f0f0 25%, transparent 25%), 
+                        linear-gradient(-45deg, #f0f0f0 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, #f0f0f0 75%), 
+                        linear-gradient(-45deg, transparent 75%, #f0f0f0 75%);
+            background-size: 8px 8px;
+            background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 24px;
+        }
+        .option2 .floating-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 28px;
+            height: 28px;
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: white;
+            font-weight: bold;
+            border: 3px solid white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .option2 .content {
+            flex: 1;
+        }
+        .option2 .title {
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+        .option2 .date {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* Option 3: Farbcodierte Seitenstreifen mit Vorschaubildern */
+        .option3 .item {
+            position: relative;
+            background: rgba(0,0,0,0.03);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-left: 4px solid #ddd;
+            display: flex;
+            align-items: center;
+        }
+        .option3 .item.pdf { border-left-color: #dc3545; }
+        .option3 .item.word { border-left-color: #0078d4; }
+        .option3 .item.excel { border-left-color: #217346; }
+        .option3 .item.image { border-left-color: #007aff; }
+        .option3 .preview-container {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            margin-right: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .option3 .preview-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+        .option3 .preview-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #f0f0f0 25%, transparent 25%), 
+                        linear-gradient(-45deg, #f0f0f0 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, #f0f0f0 75%), 
+                        linear-gradient(-45deg, transparent 75%, #f0f0f0 75%);
+            background-size: 8px 8px;
+            background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 20px;
+        }
+        .option3 .corner-badge {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: white;
+            font-weight: bold;
+            border: 2px solid white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+        .option3 .content {
+            flex: 1;
+        }
+        .option3 .title {
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+        .option3 .date {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* Option 4: Große Thumbnails mit Corner Badges */
+        .option4 .item {
+            position: relative;
+            background: rgba(0,0,0,0.03);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        .option4 .large-preview {
+            position: relative;
+            width: 70px;
+            height: 70px;
+            border-radius: 8px;
+            margin-right: 12px;
+            overflow: hidden;
+        }
+        .option4 .preview-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .option4 .preview-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #f0f0f0 25%, transparent 25%), 
+                        linear-gradient(-45deg, #f0f0f0 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, #f0f0f0 75%), 
+                        linear-gradient(-45deg, transparent 75%, #f0f0f0 75%);
+            background-size: 8px 8px;
+            background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 28px;
+        }
+        .option4 .corner-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 22px;
+            height: 22px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: white;
+            font-weight: bold;
+            border: 2px solid white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        .option4 .content {
+            flex: 1;
+        }
+        .option4 .title {
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+        .option4 .date {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .description {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .pros {
+            color: #28a745;
+            font-weight: 500;
+        }
+        .cons {
+            color: #dc3545;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; color: #1d1d1f; margin-bottom: 40px;">ShotCast Sidebar Design Optionen</h1>
+    
+    <div class="container">
+        <!-- Option 1: Kleine Badges unten rechts -->
+        <div class="option">
+            <h2>Option 1: Kleine Badges Unten Rechts</h2>
+            <div class="sidebar-demo option1">
+                <input type="text" class="search-bar" placeholder="Suchen..." readonly>
+                <select class="filter-dropdown">
+                    <option>Alle Dateitypen</option>
+                </select>
+                
+                <div class="item">
+                    <div class="preview-container">
+                        <div class="preview-placeholder">📄</div>
+                        <div class="icon-badge pdf">📄</div>
+                    </div>
+                    <div class="content">
+                        <div class="title">H_30511715.pdf</div>
+                        <div class="date">01.10.2025, 13:43</div>
+                    </div>
+                </div>
+                
+                <div class="item">
+                    <div class="preview-container">
+                        <div class="preview-placeholder">📝</div>
+                        <div class="icon-badge word">W</div>
+                    </div>
+                    <div class="content">
+                        <div class="title">Bericht_2024.docx</div>
+                        <div class="date">01.10.2025, 12:30</div>
+                    </div>
+                </div>
+                
+                <div class="item">
+                    <div class="preview-container">
+                        <div class="preview-placeholder">📊</div>
+                        <div class="icon-badge excel">X</div>
+                    </div>
+                    <div class="content">
+                        <div class="title">Tabelle.xlsx</div>
+                        <div class="date">01.10.2025, 11:15</div>
+                    </div>
+                </div>
+                
+                <div class="item">
+                    <div class="preview-container">
+                        <div class="preview-placeholder" style="background: linear-gradient(45deg, #007aff22, #007aff44); color: #007aff;">📸</div>
+                        <div class="icon-badge image">🖼</div>
+                    </div>
+                    <div class="content">
+                        <div class="title">Image - 273x705</div>
+                        <div class="date">02.10.2025, 06:08</div>
+                    </div>
+                </div>
+                
+                <div class="item">
+                    <div class="preview-container">
+                        <div class="preview-placeholder">💾</div>
+                        <div class="icon-badge pdf">📄</div>
+                    </div>
+                    <div class="content">
+                        <div class="title">Heroicons</div>
+                        <div class="date">02.10.2025, 06:12</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="description">
+                <div class="pros">✓ Vorteile:</div>
+                • Vorschaubilder gut sichtbar<br>
+                • Kleine Badges stören nicht<br>
+                • Kompakte Darstellung<br>
+                • Markenfarben erkennbar<br><br>
+                
+                <div class="cons">⚠ Nachteile:</div>
+                • Badges können bei dunklen Vorschaubildern untergehen<br>
+                • Sehr kleine Icon-Größe
+            </div>
+        </div>
+        
+        <!-- Option 2: Große schwebende Badges -->
+        <div class="option">
+            <h2>Option 2: Große Schwebende Badges</h2>
+            <div class="sidebar-demo option2">
+                <input type="text" class="search-bar" placeholder="Suchen..." readonly>
+                <select class="filter-dropdown">
+                    <option>Alle Dateitypen</option>
+                </select>
+                
+                <div class="item">
+                    <div class="preview-container">
+                        <div class="preview-placeholder">📄</div>
+                        <div class="floating-badge pdf">📄</div>
+                    </div>
+                    <div class="content">
+                        <div class="title">H_30511715.pdf</div>
+                        <div class="date">01.10.2025, 13:43</div>
+                    </div>
+                </div>
+                
+                <div class="item">
+                    <div class="preview-container">
+                        <div class="preview-placeholder">📝</div>
+                        <div class="floating-badge word">W</div>
+                    </div>
+                    <div class="content">
+                        <div class="title">Bericht_2024.docx</div>
+                        <div class="date">01.10.2025, 12:30</div>
+                    </div>
+                </div>
+                
+                <div class="item">
+                    <div class="preview-container">
+                        <div class="preview-placeholder">📊</div>
+                        <div class="floating-badge excel">X</div>
+                    </div>
+                    <div class="content">
+                        <div class="title">Tabelle.xlsx</div>
+                        <div class="date">01.10.2025, 11:15</div>
+                    </div>
+                </div>
+                
+                <div class="item">
+                    <div class="preview-container">
+                        <div class="preview-placeholder" style="background: linear-gradient(45deg, #007aff22, #007aff44); color: #007aff;">📸</div>
+                        <div class="floating-badge image">🖼</div>
+                    </div>
+                    <div class="content">
+                        <div class="title">Image - 273x705</div>
+                        <div class="date">02.10.2025, 06:08</div>
+                    </div>
+                </div>
+                
+                <div class="item">
+                    <div class="preview-container">
+                        <div class="preview-placeholder">💾</div>
+                        <div class="floating-badge pdf">📄</div>
+                    </div>
+                    <div class="content">
+                        <div class="title">Heroicons</div>
+                        <div class="date">02.10.2025, 06:12</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="description">
+                <div class="pros">✓ Vorteile:</div>
+                • Badges sehr prominent und gut sichtbar<br>
+                • Große Vorschaubilder<br>
+                • Starke visuelle Unterscheidung<br>
+                • Markenfarben optimal zur Geltung<br><br>
+                
+                <div class="cons">⚠ Nachteile:</div>
+                • Badges können Vorschauinhalt verdecken<br>
+                • Etwas aufdringlich bei vielen Items
+            </div>
+        </div>
+        
+        <!-- Option 3: Farbstreifen + Corner Badges -->
+        <div class="option">
+            <h2>Option 3: Farbstreifen + Corner Badges</h2>
+            <div class="sidebar-demo option3">
+                <input type="text" class="search-bar" placeholder="Suchen..." readonly>
+                <select class="filter-dropdown">
+                    <option>Alle Dateitypen</option>
+                </select>
+                
+                <div class="item pdf">
+                    <div class="preview-container">
+                        <div class="preview-placeholder">📄</div>
+                        <div class="corner-badge pdf">📄</div>
+                    </div>
+                    <div class="content">
+                        <div class="title">H_30511715.pdf</div>
+                        <div class="date">01.10.2025, 13:43</div>
+                    </div>
+                </div>
+                
+                <div class="item word">
+                    <div class="preview-container">
+                        <div class="preview-placeholder">📝</div>
+                        <div class="corner-badge word">W</div>
+                    </div>
+                    <div class="content">
+                        <div class="title">Bericht_2024.docx</div>
+                        <div class="date">01.10.2025, 12:30</div>
+                    </div>
+                </div>
+                
+                <div class="item excel">
+                    <div class="preview-container">
+                        <div class="preview-placeholder">📊</div>
+                        <div class="corner-badge excel">X</div>
+                    </div>
+                    <div class="content">
+                        <div class="title">Tabelle.xlsx</div>
+                        <div class="date">01.10.2025, 11:15</div>
+                    </div>
+                </div>
+                
+                <div class="item image">
+                    <div class="preview-container">
+                        <div class="preview-placeholder" style="background: linear-gradient(45deg, #007aff22, #007aff44); color: #007aff;">📸</div>
+                        <div class="corner-badge image">🖼</div>
+                    </div>
+                    <div class="content">
+                        <div class="title">Image - 273x705</div>
+                        <div class="date">02.10.2025, 06:08</div>
+                    </div>
+                </div>
+                
+                <div class="item pdf">
+                    <div class="preview-container">
+                        <div class="preview-placeholder">💾</div>
+                        <div class="corner-badge pdf">📄</div>
+                    </div>
+                    <div class="content">
+                        <div class="title">Heroicons</div>
+                        <div class="date">02.10.2025, 06:12</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="description">
+                <div class="pros">✓ Vorteile:</div>
+                • Doppelte Unterscheidung: Farbe + Badge<br>
+                • Farbstreifen als schnelle Orientierung<br>
+                • Corner-Badges stören Vorschau nicht<br>
+                • Sehr ordentlich und strukturiert<br><br>
+                
+                <div class="cons">⚠ Nachteile:</div>
+                • Corner-Position kann übersehen werden<br>
+                • Mehr visuelle Elemente pro Item
+            </div>
+        </div>
+        
+        <!-- Option 4: Große Thumbnails mit Corner Badges -->
+        <div class="option">
+            <h2>Option 4: Große Thumbnails + Corner Badges</h2>
+            <div class="sidebar-demo option4">
+                <input type="text" class="search-bar" placeholder="Suchen..." readonly>
+                <select class="filter-dropdown">
+                    <option>Alle Dateitypen</option>
+                </select>
+                
+                <div class="item">
+                    <div class="large-preview">
+                        <div class="preview-placeholder">📄</div>
+                        <div class="corner-badge pdf">📄</div>
+                    </div>
+                    <div class="content">
+                        <div class="title">H_30511715.pdf</div>
+                        <div class="date">01.10.2025, 13:43</div>
+                    </div>
+                </div>
+                
+                <div class="item">
+                    <div class="large-preview">
+                        <div class="preview-placeholder">📝</div>
+                        <div class="corner-badge word">W</div>
+                    </div>
+                    <div class="content">
+                        <div class="title">Bericht_2024.docx</div>
+                        <div class="date">01.10.2025, 12:30</div>
+                    </div>
+                </div>
+                
+                <div class="item">
+                    <div class="large-preview">
+                        <div class="preview-placeholder">📊</div>
+                        <div class="corner-badge excel">X</div>
+                    </div>
+                    <div class="content">
+                        <div class="title">Tabelle.xlsx</div>
+                        <div class="date">01.10.2025, 11:15</div>
+                    </div>
+                </div>
+                
+                <div class="item">
+                    <div class="large-preview">
+                        <div class="preview-placeholder" style="background: linear-gradient(45deg, #007aff22, #007aff44); color: #007aff;">📸</div>
+                        <div class="corner-badge image">🖼</div>
+                    </div>
+                    <div class="content">
+                        <div class="title">Image - 273x705</div>
+                        <div class="date">02.10.2025, 06:08</div>
+                    </div>
+                </div>
+                
+                <div class="item">
+                    <div class="large-preview">
+                        <div class="preview-placeholder">💾</div>
+                        <div class="corner-badge pdf">📄</div>
+                    </div>
+                    <div class="content">
+                        <div class="title">Heroicons</div>
+                        <div class="date">02.10.2025, 06:12</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="description">
+                <div class="pros">✓ Vorteile:</div>
+                • Größte Vorschaubilder (70x70px)<br>
+                • Corner-Badges perfekt positioniert<br>
+                • Beste Erkennbarkeit von Inhalten<br>
+                • Sehr professionelle Darstellung<br><br>
+                
+                <div class="cons">⚠ Nachteile:</div>
+                • Braucht am meisten vertikalen Platz<br>
+                • Weniger Items sichtbar pro Bildschirm
+            </div>
+        </div>
+    </div>
+</body>
+</html>

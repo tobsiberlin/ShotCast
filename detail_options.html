@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShotCast - Detailansicht Design Optionen</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f7;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        .option {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .option h2 {
+            margin: 0 0 20px 0;
+            color: #1d1d1f;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .detail-demo {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        /* Option 1: Header mit prominentem App-Logo */
+        .option1 .header {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            color: white;
+        }
+        .option1 .app-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 16px;
+        }
+        .option1 .header-info h3 {
+            margin: 0 0 4px 0;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .option1 .header-info .source {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .option1 .preview {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #666;
+        }
+        .option1 .metadata {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .option1 .meta-item {
+            background: rgba(0,0,0,0.03);
+            padding: 12px;
+            border-radius: 8px;
+        }
+        .option1 .meta-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .option1 .meta-value {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        /* Option 2: Karten-Layout mit App-Icon-Integration */
+        .option2 .title-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .option2 .title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+        .option2 .favorite {
+            color: #ffcc00;
+            font-size: 20px;
+        }
+        .option2 .app-source {
+            display: flex;
+            align-items: center;
+            background: rgba(0,0,0,0.03);
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        .option2 .app-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: #007aff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+        .option2 .source-info .app-name {
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+        .option2 .source-info .timestamp {
+            font-size: 12px;
+            color: #666;
+        }
+        .option2 .preview {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #666;
+        }
+        .option2 .info-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        .option2 .info-card {
+            background: rgba(0,0,0,0.03);
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .option2 .info-card .value {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .option2 .info-card .label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+        
+        /* Option 3: Sidebar-Style mit großem App-Logo */
+        .option3 {
+            display: flex;
+        }
+        .option3 .app-sidebar {
+            width: 120px;
+            background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px 0 0 12px;
+            padding: 20px;
+            text-align: center;
+            border-right: 1px solid rgba(0,0,0,0.1);
+        }
+        .option3 .app-logo-large {
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            background: #007aff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            margin: 0 auto 12px auto;
+        }
+        .option3 .app-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .option3 .app-category {
+            font-size: 10px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .option3 .content-area {
+            flex: 1;
+            padding: 20px;
+        }
+        .option3 .title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .option3 .subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .option3 .preview {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #666;
+        }
+        .option3 .properties {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .option3 .property {
+            background: rgba(0,0,0,0.05);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* Option 4: Hero-Section mit App-Integration */
+        .option4 .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 24px;
+            color: white;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        .option4 .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transform: translate(30px, -30px);
+        }
+        .option4 .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        .option4 .hero-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .option4 .hero-app-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-right: 12px;
+        }
+        .option4 .hero-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+        .option4 .hero-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin: 0;
+        }
+        .option4 .hero-stats {
+            display: flex;
+            gap: 24px;
+            margin-top: 16px;
+        }
+        .option4 .stat {
+            text-align: center;
+        }
+        .option4 .stat-value {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .option4 .stat-label {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        .option4 .content-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .option4 .preview {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+            text-align: center;
+            color: #666;
+        }
+        .option4 .actions {
+            display: flex;
+            gap: 12px;
+        }
+        .option4 .action-btn {
+            flex: 1;
+            padding: 12px;
+            background: #007aff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .option4 .action-btn.secondary {
+            background: rgba(0,0,0,0.05);
+            color: #333;
+        }
+        
+        .description {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .pros {
+            color: #28a745;
+            font-weight: 500;
+        }
+        .cons {
+            color: #dc3545;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; color: #1d1d1f; margin-bottom: 40px;">ShotCast Detailansicht Design Optionen</h1>
+    
+    <div class="container">
+        <!-- Option 1: Header mit prominentem App-Logo -->
+        <div class="option">
+            <h2>Option 1: App-Header Design</h2>
+            <div class="detail-demo option1">
+                <div class="header">
+                    <div class="app-logo">📄</div>
+                    <div class="header-info">
+                        <h3>H_30511715.pdf</h3>
+                        <div class="source">Aus Finder • 01.10.2025, 13:43</div>
+                    </div>
+                </div>
+                
+                <div class="preview">
+                    Vorschau nicht verfügbar<br>
+                    <small>PDF-Inhalt</small>
+                </div>
+                
+                <div class="metadata">
+                    <div class="meta-item">
+                        <div class="meta-label">Typ</div>
+                        <div class="meta-value">PDF</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Größe</div>
+                        <div class="meta-value">29 KB</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Datum</div>
+                        <div class="meta-value">01.10.2025</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Quelle</div>
+                        <div class="meta-value">Finder</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="description">
+                <div class="pros">✓ Vorteile:</div>
+                • App-Logo sehr prominent platziert<br>
+                • Professionelles Header-Design<br>
+                • Übersichtliche Metadaten-Darstellung<br>
+                • Klare Hierarchie der Informationen<br><br>
+                
+                <div class="cons">⚠ Nachteile:</div>
+                • Header nimmt viel Platz ein<br>
+                • Weniger Platz für Preview-Inhalte
+            </div>
+        </div>
+        
+        <!-- Option 2: Karten-Layout mit App-Icon-Integration -->
+        <div class="option">
+            <h2>Option 2: Karten mit App-Integration</h2>
+            <div class="detail-demo option2">
+                <div class="title-section">
+                    <div class="title">H_30511715.pdf</div>
+                    <div class="favorite">⭐</div>
+                </div>
+                
+                <div class="app-source">
+                    <div class="app-icon">🗂</div>
+                    <div class="source-info">
+                        <div class="app-name">Finder</div>
+                        <div class="timestamp">01.10.2025, 13:43</div>
+                    </div>
+                </div>
+                
+                <div class="preview">
+                    Vorschau nicht verfügbar<br>
+                    <small>PDF-Inhalt</small>
+                </div>
+                
+                <div class="info-cards">
+                    <div class="info-card">
+                        <div class="value">PDF</div>
+                        <div class="label">Typ</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="value">29 KB</div>
+                        <div class="label">Größe</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="value">1</div>
+                        <div class="label">Seiten</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="description">
+                <div class="pros">✓ Vorteile:</div>
+                • App-Icon gut integriert<br>
+                • Kompakte Informationsdarstellung<br>
+                • Moderne Karten-Optik<br>
+                • Gute Balance zwischen Elementen<br><br>
+                
+                <div class="cons">⚠ Nachteile:</div>
+                • App-Icon etwas klein<br>
+                • Viele kleine Informationsblöcke
+            </div>
+        </div>
+        
+        <!-- Option 3: Sidebar-Style mit großem App-Logo -->
+        <div class="option">
+            <h2>Option 3: App-Sidebar Design</h2>
+            <div class="detail-demo option3">
+                <div class="app-sidebar">
+                    <div class="app-logo-large">🗂</div>
+                    <div class="app-name">Finder</div>
+                    <div class="app-category">Datei-Manager</div>
+                </div>
+                <div class="content-area">
+                    <div class="title">H_30511715.pdf</div>
+                    <div class="subtitle">PDF-Dokument</div>
+                    
+                    <div class="preview">
+                        Vorschau nicht verfügbar
+                    </div>
+                    
+                    <div class="properties">
+                        <div class="property">29 KB</div>
+                        <div class="property">01.10.2025</div>
+                        <div class="property">13:43</div>
+                        <div class="property">1 Seite</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="description">
+                <div class="pros">✓ Vorteile:</div>
+                • App-Logo maximal prominent<br>
+                • Eindeutige App-Zuordnung<br>
+                • Saubere Trennung von App und Inhalt<br>
+                • Platz für App-Kategorisierung<br><br>
+                
+                <div class="cons">⚠ Nachteile:</div>
+                • Sidebar braucht zusätzlichen Platz<br>
+                • Weniger Platz für Hauptinhalt
+            </div>
+        </div>
+        
+        <!-- Option 4: Hero-Section mit App-Integration -->
+        <div class="option">
+            <h2>Option 4: Hero-Section Design</h2>
+            <div class="detail-demo option4">
+                <div class="hero">
+                    <div class="hero-content">
+                        <div class="hero-header">
+                            <div class="hero-app-icon">🗂</div>
+                            <div>
+                                <div class="hero-title">H_30511715.pdf</div>
+                                <div class="hero-subtitle">Finder • PDF-Dokument</div>
+                            </div>
+                        </div>
+                        
+                        <div class="hero-stats">
+                            <div class="stat">
+                                <div class="stat-value">29 KB</div>
+                                <div class="stat-label">Größe</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">1</div>
+                                <div class="stat-label">Seite</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">13:43</div>
+                                <div class="stat-label">Zeit</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <div class="preview">
+                        Vorschau nicht verfügbar<br>
+                        <small>PDF-Inhalt</small>
+                    </div>
+                    
+                    <div class="actions">
+                        <button class="action-btn">Kopieren</button>
+                        <button class="action-btn secondary">Teilen</button>
+                        <button class="action-btn secondary">Löschen</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="description">
+                <div class="pros">✓ Vorteile:</div>
+                • Sehr visuell ansprechend<br>
+                • Hero-Design für wichtige Infos<br>
+                • App gut integriert<br>
+                • Moderne Glassmorphism-Optik<br><br>
+                
+                <div class="cons">⚠ Nachteile:</div>
+                • Sehr auffällig, evtl. zu dominant<br>
+                • Komplexere Implementierung
+            </div>
+        </div>
+    </div>
+</body>
+</html>

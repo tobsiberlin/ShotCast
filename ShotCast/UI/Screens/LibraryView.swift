@@ -321,82 +321,76 @@ struct LibraryItemCard: View {
     
     var body: some View {
         GlassCard {
-            VStack(alignment: .leading, spacing: GlassTheme.smallSpacing) {
-                // EN: Thumbnail or icon
-                // DE: Vorschaubild oder Symbol
-                if let thumbnailImage = thumbnailImage {
-                    Image(nsImage: thumbnailImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: 80)
-                        .frame(maxWidth: .infinity)
-                        .clipShape(RoundedRectangle(cornerRadius: GlassTheme.smallRadius))
-                        .overlay(
-                            // EN: Item type badge on thumbnail
-                            // DE: Element-Typ-Badge auf Vorschaubild
-                            HStack {
-                                Spacer()
-                                VStack {
-                                    HStack(spacing: 4) {
-                                        Image(systemName: item.itemType.icon)
-                                            .font(.caption)
-                                        if item.isFavorite {
-                                            Image(systemName: "star.fill")
-                                                .font(.caption)
-                                                .foregroundColor(.yellow)
-                                        }
-                                    }
-                                    .padding(.horizontal, 6)
-                                    .padding(.vertical, 3)
-                                    .background(.ultraThinMaterial, in: Capsule())
-                                    .foregroundColor(item.itemType.color)
-                                    Spacer()
-                                }
-                            }
-                            .padding(GlassTheme.tinySpacing)
-                        )
-                } else {
-                    // EN: Fallback icon view
-                    // DE: Fallback-Symbol-Ansicht
-                    HStack {
-                        Image(systemName: item.itemType.icon)
-                            .font(.title2)
-                            .foregroundColor(item.itemType.color)
-                        
-                        Spacer()
-                        
-                        if item.isFavorite {
-                            Image(systemName: "star.fill")
-                                .font(.caption)
-                                .foregroundColor(.yellow)
-                        }
+            HStack(alignment: .center, spacing: GlassTheme.mediumSpacing) {
+                // EN: Preview container with floating badge
+                // DE: Vorschau-Container mit schwebendem Badge
+                ZStack {
+                    // EN: Preview image or placeholder
+                    // DE: Vorschaubild oder Platzhalter
+                    if let thumbnailImage = thumbnailImage {
+                        Image(nsImage: thumbnailImage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 60, height: 60)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                    } else {
+                        // EN: Fallback preview with pattern
+                        // DE: Fallback-Vorschau mit Muster
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color.gray.opacity(0.1))
+                            .frame(width: 60, height: 60)
+                            .overlay(
+                                Image(systemName: getPreviewIcon())
+                                    .font(.title2)
+                                    .foregroundColor(.gray.opacity(0.6))
+                            )
                     }
-                }
-                
-                Text(item.title)
-                    .font(.callout)
-                    .fontWeight(.medium)
-                    .lineLimit(2)
-                
-                Text(item.displayDate)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                
-                if !item.tags!.isEmpty {
-                    HStack(spacing: 4) {
-                        ForEach(item.tags!) { tag in
-                            Text(tag.name)
-                                .font(.caption2)
-                                .padding(.horizontal, 6)
-                                .padding(.vertical, 2)
-                                .background(
-                                    Capsule()
-                                        .fill(tag.color.opacity(0.2))
+                    
+                    // EN: Floating type badge (Option 2 style)
+                    // DE: Schwebendes Typ-Badge (Option 2 Stil)
+                    VStack {
+                        HStack {
+                            Spacer()
+                            Image(systemName: item.itemType.icon)
+                                .font(.system(size: 14, weight: .bold))
+                                .foregroundColor(.white)
+                                .frame(width: 28, height: 28)
+                                .background(item.itemType.color)
+                                .clipShape(RoundedRectangle(cornerRadius: 7))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 7)
+                                        .stroke(Color.white, lineWidth: 3)
                                 )
+                                .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
+                                .offset(x: 6, y: -6)
                         }
+                        Spacer()
                     }
                 }
+                
+                // EN: Content information
+                // DE: Inhaltsinformationen
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(item.title)
+                        .font(.callout)
+                        .fontWeight(.medium)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
+                    
+                    Text(item.displayDate)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    
+                    if item.isFavorite {
+                        Image(systemName: "star.fill")
+                            .font(.caption)
+                            .foregroundColor(.yellow)
+                    }
+                }
+                
+                Spacer()
             }
+            .padding(GlassTheme.smallSpacing)
         }
         .overlay(
             RoundedRectangle(cornerRadius: GlassTheme.cardRadius)
@@ -413,6 +407,23 @@ struct LibraryItemCard: View {
         .onTapGesture(perform: onTap)
         .onAppear {
             loadThumbnailIfNeeded()
+        }
+    }
+    
+    // EN: Get preview icon for file type
+    // DE: Vorschau-Icon für Dateityp abrufen
+    private func getPreviewIcon() -> String {
+        switch item.itemType {
+        case .image: return "photo"
+        case .pdf: return "doc.text"
+        case .video: return "play.rectangle"
+        case .text: return "doc.plaintext"
+        case .word: return "doc.richtext"
+        case .excel: return "tablecells"
+        case .powerpoint: return "rectangle.on.rectangle"
+        case .code: return "curlybraces"
+        case .audio: return "waveform"
+        default: return "doc"
         }
     }
     
